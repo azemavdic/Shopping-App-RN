@@ -1,29 +1,31 @@
 import React from 'react';
-import {Text, View, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
+
+import ProductItem from '../../components/shop/ProductItem';
 
 const ProductsOverviewScreen = () => {
     const products = useSelector((state) => state.products.availableProducts);
-    const renderItem = (itemData) => {
-        return (
-            <View>
-                <Text>{itemData.item.title}</Text>
-            </View>
-        );
-    };
 
     return (
         <FlatList
             data={products}
-            renderItem={renderItem}
+            renderItem={(itemData) => (
+                <ProductItem
+                    image={itemData.item.imageUrl}
+                    title={itemData.item.title}
+                    price={itemData.item.price}
+                    onViewDetail={() => {}}
+                    onAddToCart={() => {}}
+                />
+            )}
             keyExtractor={(item) => item.id}
         />
     );
 };
 
-ProductsOverviewScreen.navigationOptions={
-    headerTitle: 'Početna'
-}
+ProductsOverviewScreen.navigationOptions = {
+    headerTitle: 'Početna',
+};
 
 export default ProductsOverviewScreen;
-
