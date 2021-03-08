@@ -1,10 +1,29 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import {Text, View, FlatList } from 'react-native';
+import { useSelector } from 'react-redux';
 
 const ProductsOverviewScreen = () => {
-    return <FlatList />;
+    const products = useSelector((state) => state.products.availableProducts);
+    const renderItem = (itemData) => {
+        return (
+            <View>
+                <Text>{itemData.item.title}</Text>
+            </View>
+        );
+    };
+
+    return (
+        <FlatList
+            data={products}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+        />
+    );
 };
+
+ProductsOverviewScreen.navigationOptions={
+    headerTitle: 'Početna'
+}
 
 export default ProductsOverviewScreen;
 
-const styles = StyleSheet.create({});
