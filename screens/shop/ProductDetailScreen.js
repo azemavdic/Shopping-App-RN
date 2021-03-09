@@ -52,19 +52,21 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 300,
     },
-    actions:{
-        alignItems:'center',
-        marginVertical:15
+    actions: {
+        alignItems: 'center',
+        marginVertical: 15,
     },
-    price:{
-        fontSize:18,
-        color:'#888',
-        textAlign:'center',
-        marginVertical:20
+    price: {
+        fontFamily: 'open-sans-bold',
+        fontSize: 18,
+        color: '#888',
+        textAlign: 'center',
+        marginVertical: 20,
     },
-    description:{
-        fontSize:14,
-        textAlign:'center',
-        marginHorizontal:10
-    }
+    description: {
+        fontFamily: 'open-sans',
+        fontSize: 14,
+        textAlign: 'center',
+        marginHorizontal: 10,
+    },
 });
