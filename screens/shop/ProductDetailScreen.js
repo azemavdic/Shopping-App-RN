@@ -7,11 +7,15 @@ import {
     Button,
     View,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
 import Colors from '../../constants/Colors';
+import { addToCart } from "../../store/actions/cart";
 
 const ProductDetailScreen = (props) => {
     const productId = props.navigation.getParam('productId');
+
+    const dispatch = useDispatch()
 
     const selectedProduct = useSelector((state) =>
         state.products.availableProducts.find(
@@ -27,7 +31,9 @@ const ProductDetailScreen = (props) => {
             <View style={styles.actions}>
                 <Button
                     title='Dodaj u korpu'
-                    onPress={() => {}}
+                    onPress={() => {
+                        dispatch(addToCart(selectedProduct))
+                    }}
                     color={Colors.primary}
                 />
             </View>
