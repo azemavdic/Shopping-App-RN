@@ -1,4 +1,4 @@
-import { ADD_TO_CART } from "../actions/cart";
+import { ADD_TO_CART, REMOVE_FROM_CART } from "../actions/cart";
 import CartItem from "../../models/cartItem";
 
 const initialState = {
@@ -37,6 +37,29 @@ export default (state = initialState, action) => {
         items: { ...state.items, [addedProduct.id]: updatedOrNewCartItem },
         totalAmount: state.totalAmount + productPrice,
       };
+    case REMOVE_FROM_CART:
+      const selectedCartItem = state.items[action.pId];
+      const currentQty = selectedCartItem.quantity;
+      let updatedCartItems
+      if (currentQty > 1) {
+        //potrebno umanjiti, ne izbrisati
+        const updatedCartItem = new CartItem(
+          selectedCartItem.quantity - 1,
+          selectedCartItem.productPrice,
+          selectedCartItem.productTitle,
+          selectedCartItem.sum - selectedCartItem.productPrice
+        );
+        updatedCartItems ={...state.items, [action.pId]: updatedCartItem}
+      } else {
+        //brisanje iz korpe
+        updatedCartItems = { ...state.items };
+        delete updatedCartItems[action.pId];
+      }
+      return {
+        ...state,
+        items: updatedCartItems,
+        totalAmount: state.totalAmount - selectedCartItem.productPrice
+      }
   }
   return state;
 };
