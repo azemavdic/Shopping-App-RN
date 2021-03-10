@@ -5,13 +5,15 @@ import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import productReducer from './store/reducers/products';
+import productsReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart';
+import ordersReducer from './store/reducers/orders';
 import ShopNavigator from './navigation/ShopNavigator';
 
 const rootReducer = combineReducers({
-    products: productReducer,
+    products: productsReducer,
     cart: cartReducer,
+    orders: ordersReducer,
 });
 
 const store = createStore(rootReducer, composeWithDevTools());
