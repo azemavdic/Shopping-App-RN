@@ -1,12 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
 import { useSelector } from 'react-redux';
+
 import Colors from '../../constants/Colors';
+import CartItem from '../../components/shop/CartItem';
 
 const CartScreen = (props) => {
     const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
-    const cartItems = useSelector(state => {
-        const arrayCartItems = []
+    const cartItems = useSelector((state) => {
+        const arrayCartItems = [];
         for (const key in state.cart.items) {
             arrayCartItems.push({
                 productId: key,
@@ -16,21 +18,36 @@ const CartScreen = (props) => {
                 sum: state.cart.items[key].sum,
             });
         }
-        return arrayCartItems
-    })
+        return arrayCartItems;
+    });
     return (
         <View style={styles.screen}>
             <View style={styles.summary}>
                 <Text style={styles.summaryText}>
                     UKUPNO:{' '}
-                    <Text style={styles.amount}>{cartTotalAmount.toFixed(2)} KM</Text>{' '}
+                    <Text style={styles.amount}>
+                        {cartTotalAmount.toFixed(2)} KM
+                    </Text>{' '}
                 </Text>
-                <Button color={Colors.accent} title='Naruči' onPress={() => {}} disabled={cartItems.length === 0 } />
+                <Button
+                    color={Colors.accent}
+                    title='Naruči'
+                    onPress={() => {}}
+                    disabled={cartItems.length === 0}
+                />
             </View>
-            <View>
-                <Text>Narudžba</Text>
-                {cartItems}
-            </View>
+            <FlatList
+                data={cartItems}
+                keyExtractor={(item) => item.productId}
+                renderItem={(itemData) => (
+                    <CartItem
+                        quantity={itemData.item.quantity}
+                        title={itemData.item.productTitle}
+                        amount={itemData.item.sum}
+                        onRemove={()=>{}}
+                    />
+                )}
+            />
         </View>
     );
 };
@@ -57,9 +74,9 @@ const styles = StyleSheet.create({
     },
     summaryText: {
         fontFamily: 'open-sans-bold',
-        fontSize:18
+        fontSize: 18,
     },
     amount: {
-        color: Colors.primary
+        color: Colors.primary,
     },
 });
