@@ -1,14 +1,16 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Platform } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import ProductItem from '../../components/shop/ProductItem';
-import {addToCart} from '../../store/actions/cart'
+import { addToCart } from '../../store/actions/cart';
+import CustomHeaderButton from '../../components/UI/HeaderButton';
 
 const ProductsOverviewScreen = (props) => {
     const products = useSelector((state) => state.products.availableProducts);
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     return (
         <FlatList
@@ -21,11 +23,11 @@ const ProductsOverviewScreen = (props) => {
                     onViewDetail={() => {
                         props.navigation.navigate('ProductDetail', {
                             productId: itemData.item.id,
-                            productTitle: itemData.item.title
+                            productTitle: itemData.item.title,
                         });
                     }}
                     onAddToCart={() => {
-                        dispatch (addToCart(itemData.item))
+                        dispatch(addToCart(itemData.item));
                     }}
                 />
             )}
@@ -34,8 +36,23 @@ const ProductsOverviewScreen = (props) => {
     );
 };
 
-ProductsOverviewScreen.navigationOptions = {
-    headerTitle: 'Početna',
+ProductsOverviewScreen.navigationOptions = (navData) => {
+    return {
+        headerTitle: 'Početna',
+        headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                <Item
+                    title='Korpa'
+                    iconName={
+                        Platform.OS === 'android' ? 'md-cart' : 'ios-cart'
+                    }
+                    onPress={() => {
+                        navData.navigation.navigate('Cart')
+                    }}
+                />
+            </HeaderButtons>
+        ),
+    };
 };
 
 export default ProductsOverviewScreen;
