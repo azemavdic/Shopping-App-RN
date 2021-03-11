@@ -22,20 +22,22 @@ const CartScreen = (props) => {
         sum: state.cart.items[key].sum,
       });
     }
-    return arrayCartItems.sort((a,b)=> a.productId > b.productId ? 1 : -1);
+    return arrayCartItems.sort((a, b) => (a.productId > b.productId ? 1 : -1));
   });
   return (
     <View style={styles.screen}>
       <View style={styles.summary}>
         <Text style={styles.summaryText}>
           UKUPNO:{" "}
-          <Text style={styles.amount}>{cartTotalAmount.toFixed(2)} KM</Text>{" "}
+          <Text style={styles.amount}>
+            {Math.round(cartTotalAmount.toFixed(2) * 100) / 100} KM
+          </Text>{" "}
         </Text>
         <Button
           color={Colors.accent}
           title='Naruči'
           onPress={() => {
-            dispatch(addOrder(cartItems, cartTotalAmount))
+            dispatch(addOrder(cartItems, cartTotalAmount));
           }}
           disabled={cartItems.length === 0}
         />
@@ -50,7 +52,7 @@ const CartScreen = (props) => {
             amount={itemData.item.sum}
             deletable
             onRemove={() => {
-                dispatch(removeFromCart(itemData.item.productId));
+              dispatch(removeFromCart(itemData.item.productId));
             }}
           />
         )}
@@ -60,9 +62,9 @@ const CartScreen = (props) => {
 };
 
 CartScreen.navigationOptions = (navData) => {
-    return {
-        headerTitle: 'Korpa',
-    };
+  return {
+    headerTitle: "Korpa",
+  };
 };
 
 export default CartScreen;

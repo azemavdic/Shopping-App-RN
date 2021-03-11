@@ -13,6 +13,10 @@ const UserProductsScreen = (props) => {
 
     const userProducts = useSelector((state) => state.products.userProducts);
 
+    const editProductHandler = (id)=>{
+        props.navigation.navigate('EditProduct', {productId: id})
+    }
+
     return (
         <FlatList
             data={userProducts}
@@ -22,12 +26,12 @@ const UserProductsScreen = (props) => {
                     image={itemData.item.imageUrl}
                     title={itemData.item.title}
                     price={itemData.item.price}
-                    onSelect={() => {}}
+                    onSelect={() => editProductHandler(itemData.item.id)}
                 >
                     <Button
                         color={Colors.primary}
                         title='Edit'
-                        onPress={() => {}}
+                        onPress={() => editProductHandler(itemData.item.id)}
                     />
                     <Button
                         color={Colors.primary}
@@ -44,20 +48,29 @@ const UserProductsScreen = (props) => {
 
 UserProductsScreen.navigationOptions = (navData) => {
     return {
-        headerTitle: 'Admin panel',
-        headerLeft: () => (
-            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-                <Item
-                    title='Narudžba'
-                    iconName={
-                        Platform.OS === 'android' ? 'md-menu' : 'ios-menu'
-                    }
-                    onPress={() => {
-                        navData.navigation.toggleDrawer();
-                    }}
-                />
-            </HeaderButtons>
-        ),
+      headerTitle: "Admin panel",
+      headerLeft: () => (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            title='Narudžba'
+            iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+            onPress={() => {
+              navData.navigation.toggleDrawer();
+            }}
+          />
+        </HeaderButtons>
+      ),
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            title='Novi artikal'
+            iconName={Platform.OS === "android" ? "md-create" : "ios-create"}
+            onPress={() => {
+              navData.navigation.navigate('EditProduct')
+            }}
+          />
+        </HeaderButtons>
+      ),
     };
 };
 
