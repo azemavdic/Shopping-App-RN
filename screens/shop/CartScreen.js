@@ -58,6 +58,12 @@ const CartScreen = (props) => {
   );
 };
 
+CartScreen.navigationOptions = (navData) => {
+    return {
+        headerTitle: 'Korpa',
+    };
+};
+
 export default CartScreen;
 
 const styles = StyleSheet.create({

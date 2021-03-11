@@ -3,9 +3,9 @@ import { FlatList, Platform } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
+import CustomHeaderButton from '../../components/UI/HeaderButton';
 import ProductItem from '../../components/shop/ProductItem';
 import { addToCart } from '../../store/actions/cart';
-import CustomHeaderButton from '../../components/UI/HeaderButton';
 
 const ProductsOverviewScreen = (props) => {
     const products = useSelector((state) => state.products.availableProducts);
@@ -39,6 +39,19 @@ const ProductsOverviewScreen = (props) => {
 ProductsOverviewScreen.navigationOptions = (navData) => {
     return {
         headerTitle: 'Početna',
+        headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                <Item
+                    title='Narudžba'
+                    iconName={
+                        Platform.OS === 'android' ? 'md-menu' : 'ios-menu'
+                    }
+                    onPress={() => {
+                        navData.navigation.toggleDrawer()
+                    }}
+                />
+            </HeaderButtons>
+        ),
         headerRight: () => (
             <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
                 <Item
@@ -47,7 +60,7 @@ ProductsOverviewScreen.navigationOptions = (navData) => {
                         Platform.OS === 'android' ? 'md-cart' : 'ios-cart'
                     }
                     onPress={() => {
-                        navData.navigation.navigate('Cart')
+                        navData.navigation.navigate('Cart');
                     }}
                 />
             </HeaderButtons>

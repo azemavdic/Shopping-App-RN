@@ -1,7 +1,0 @@
-{ 
-  "plugins": ["quokka-react-native-plugin"],
-  "babel": {
-    "presets": ["module:metro-react-native-babel-preset"],
-    "ignore": "node_modules\\\\(?!(jest-)?react-native|@react-native-community)"
- }
-}
