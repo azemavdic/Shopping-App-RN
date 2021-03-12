@@ -1,21 +1,37 @@
 import React from 'react';
-import { Platform, FlatList, Button } from 'react-native';
+import { Platform, FlatList, Button, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import CustomHeaderButton from '../../components/UI/HeaderButton';
 import ProductItem from '../../components/shop/ProductItem';
-import Colors from '../../constants/Colors'
-import {deleteProduct} from '../../store/actions/products'
+import Colors from '../../constants/Colors';
+import { deleteProduct } from '../../store/actions/products';
 
 const UserProductsScreen = (props) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const userProducts = useSelector((state) => state.products.userProducts);
 
-    const editProductHandler = (id)=>{
-        props.navigation.navigate('EditProduct', {productId: id})
-    }
+    const editProductHandler = (id) => {
+        props.navigation.navigate('EditProduct', { productId: id });
+    };
+    const deleteHandler = (id) => {
+        Alert.alert(
+            'Brisanje proizvoda',
+            'Jeste li sigurni da želite obrisati ovaj proizvod?',
+            [
+                { text: 'Ne', style: 'default' },
+                {
+                    text: 'Da',
+                    style: 'destructive',
+                    onPress: () => {
+                        dispatch(deleteProduct(id));
+                    },
+                },
+            ]
+        );
+    };
 
     return (
         <FlatList
@@ -36,9 +52,7 @@ const UserProductsScreen = (props) => {
                     <Button
                         color={Colors.primary}
                         title='Izbriši'
-                        onPress={() => {
-                            dispatch(deleteProduct(itemData.item.id))
-                        }}
+                        onPress={()=>deleteHandler(itemData.item.id)}
                     />
                 </ProductItem>
             )}
@@ -48,29 +62,33 @@ const UserProductsScreen = (props) => {
 
 UserProductsScreen.navigationOptions = (navData) => {
     return {
-      headerTitle: "Admin panel",
-      headerLeft: () => (
-        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-          <Item
-            title='Narudžba'
-            iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
-            onPress={() => {
-              navData.navigation.toggleDrawer();
-            }}
-          />
-        </HeaderButtons>
-      ),
-      headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-          <Item
-            title='Novi artikal'
-            iconName={Platform.OS === "android" ? "md-create" : "ios-create"}
-            onPress={() => {
-              navData.navigation.navigate('EditProduct')
-            }}
-          />
-        </HeaderButtons>
-      ),
+        headerTitle: 'Admin panel',
+        headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                <Item
+                    title='Narudžba'
+                    iconName={
+                        Platform.OS === 'android' ? 'md-menu' : 'ios-menu'
+                    }
+                    onPress={() => {
+                        navData.navigation.toggleDrawer();
+                    }}
+                />
+            </HeaderButtons>
+        ),
+        headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                <Item
+                    title='Novi artikal'
+                    iconName={
+                        Platform.OS === 'android' ? 'md-create' : 'ios-create'
+                    }
+                    onPress={() => {
+                        navData.navigation.navigate('EditProduct');
+                    }}
+                />
+            </HeaderButtons>
+        ),
     };
 };
 

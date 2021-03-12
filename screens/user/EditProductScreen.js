@@ -6,6 +6,7 @@ import {
     ScrollView,
     TextInput,
     Platform,
+    Alert,
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
@@ -38,6 +39,7 @@ const EditProductScreen = (props) => {
         } else {
             dispatch(createProduct(title, description, image, +price));
         }
+        props.navigation.goBack()
     }, [dispatch, prodId, title, description, image, price]);
 
     useEffect(() => {
